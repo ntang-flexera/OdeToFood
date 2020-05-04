@@ -10,6 +10,10 @@ namespace OdeToFood.Data
     {
         IEnumerable<Restaurant>GetAll();
         IEnumerable<Restaurant> GetRestaurantByName(string name);
+        Restaurant GetById(int id);
+        Restaurant Update(Restaurant restaurant);
+        Restaurant Add(Restaurant restaurant);
+        int Commit();
     }
 
     public class InMemoryRestaurantData : IRestaurantData
@@ -19,10 +23,11 @@ namespace OdeToFood.Data
         {
             restaurants = new List<Restaurant>()
             {
-                new Restaurant{Id = 1, Name="Indian food", Location = "ny, ny", Cuisine = CuisineType.Indian},
-                new Restaurant{Id = 1, Name="Mexican rest", Location = "la, ca", Cuisine = CuisineType.Mexican},
+                new Restaurant{Id = 4, Name="Indian food", Location = "ny, ny", Cuisine = CuisineType.Indian},
+                new Restaurant{Id = 20, Name="Mexican rest", Location = "la, ca", Cuisine = CuisineType.Mexican},
             };
         }
+
         public IEnumerable<Restaurant> GetAll()
         {
             return from r in restaurants
@@ -31,11 +36,40 @@ namespace OdeToFood.Data
 
         }
 
+        public Restaurant GetById(int id)
+        {
+            return restaurants.SingleOrDefault(i => i.Id == id);
+        }
+
         public IEnumerable<Restaurant> GetRestaurantByName(string name){
             return from r in restaurants
                     where string.IsNullOrEmpty(name) || r.Name.StartsWith(name)
                     orderby r.Name
                     select r;
+        }
+
+         public Restaurant Update(Restaurant updatedRestaurant)
+        {
+            var restaurant = restaurants.SingleOrDefault(r => r.Id == updatedRestaurant.Id);
+            if(restaurant != null)
+            {
+                restaurant.Name = updatedRestaurant.Name;
+                restaurant.Location = updatedRestaurant.Location;
+                restaurant.Cuisine = updatedRestaurant.Cuisine;
+            }
+            return restaurant;
+        }
+
+        public int Commit()
+        {
+            return 0;
+        }
+
+        public Restaurant Add(Restaurant restaurant)
+        {
+            restaurant.Id = restaurants.Max(r => r.Id) +1;
+            restaurants.Add(restaurant);
+            return restaurant;
         }
     }
 }
