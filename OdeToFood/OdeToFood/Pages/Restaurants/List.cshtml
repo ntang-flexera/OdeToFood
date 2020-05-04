@@ -3,4 +3,27 @@
 @{
 }
 <h1>Restaurants</h1>
-@Model.Message
+<form method="get">
+    <div class="form-group">
+            <input type="search" class="form-control" asp-for="SearchTerm" />
+            <span>
+                <button class="btn btn-default">
+                    <i class="fas fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+<table class="table">
+    @foreach(var r in @Model.Restaurants)
+    {
+        <tr>
+            <td>@r.Name</td>
+            <td>@r.Location</td>
+            <td>@r.Cuisine</td>
+        </tr>
+    }
+</table>
+
+<div>@Model.Message</div>
+@* @Model.Restaurants *@
