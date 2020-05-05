@@ -15,7 +15,7 @@ namespace OdeToFood.Data
         }
         public Restaurant Add(Restaurant restaurant)
         {
-            db.Add(restaurant);
+            db.Restaurants.Add(restaurant);
             return restaurant;
         }
 
